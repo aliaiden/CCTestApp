@@ -9,8 +9,13 @@ import butterknife.ButterKnife;
 import me.relex.circleindicator.CircleIndicator;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
+import com.alihaider.myapp.adapter.DaysForecastRVAdapter;
 import com.alihaider.myapp.adapter.MainPagerAdapter;
+import com.alihaider.myapp.model.ForecastResponseDataModel;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     @BindView(R.id.viewPager)
@@ -21,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView rvDays;
 
     MainPagerAdapter mainPagerAdapter;
+    DaysForecastRVAdapter daysForecastRVAdapter;
+    ArrayList<ForecastResponseDataModel> daysForecastList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +36,14 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         getSupportActionBar().hide();
         init();
+
+        fetchWeatherDaysForecast();
+    }
+
+    private void fetchWeatherDaysForecast() {
+        daysForecastList = new ArrayList<>();
+        daysForecastRVAdapter = new DaysForecastRVAdapter(this, daysForecastList);
+        rvDays.setAdapter(daysForecastRVAdapter);
     }
 
     private void init() {
@@ -38,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         indicator.setViewPager(viewPager);
 
         //init recyclerview
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, true);
         rvDays.setLayoutManager(layoutManager);
     }
 }
